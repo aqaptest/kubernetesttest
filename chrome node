@@ -1,0 +1,44 @@
+# kubectl apply -f chrome-node-AKS-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome-node
+  labels:
+    app: chrome-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chrome-node
+  template:
+    metadata:
+      name: chrome-node
+      labels:
+        app: chrome-node
+    spec:
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+      containers:
+        - name: chrome-node
+          image: selenium/standalone-chrome
+          ports:
+            - containerPort: 5555
+          volumeMounts:
+            - mountPath: /dev/shm
+              name: dshm
+          env:
+            - name: HUB_HOST
+              value: "selenium-hub" 
+            - name: HUB_PORT
+              value: "4444" 
+     # nodeSelector:
+     #   kubernetes.io/role: agent
+     #   beta.kubernetes.io/os: linux
+     #   type: virtual-kubelet
+     # tolerations:
+      #    - key: virtual-kubelet.io/provider
+      #      operator: Exists
+      #    - key: azure.com/aci
+      #      effect: NoSchedule
