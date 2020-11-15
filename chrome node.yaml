@@ -22,7 +22,7 @@ spec:
             medium: Memory
       containers:
         - name: chrome-node
-          image: selenium/standalone-chrome
+          image: selenium/node-chrome
           ports:
             - containerPort: 5555
           volumeMounts:
